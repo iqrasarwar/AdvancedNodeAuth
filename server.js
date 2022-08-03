@@ -5,7 +5,7 @@ const connectDB = require("./config/db");
 const errorHandler = require("./middleware/error");
 
 connectDB();
-
+//middle ware to allow to get data from body
 app.use(express.json());
 
 app.get("/", (req, res, next) => {

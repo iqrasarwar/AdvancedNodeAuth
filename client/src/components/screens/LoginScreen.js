@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "./LoginScreen.css";
 
 const LoginScreen = ({ history }) => {
   const [email, setEmail] = useState("");
@@ -59,12 +58,7 @@ const LoginScreen = ({ history }) => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="password">
-            Password:{" "}
-            <Link to="/forgotpassword" className="login-screen__forgotpassword">
-              Forgot Password?
-            </Link>
-          </label>
+          <label htmlFor="password">Password: </label>
           <input
             type="password"
             required

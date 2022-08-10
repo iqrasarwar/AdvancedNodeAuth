@@ -3,32 +3,72 @@ import axios from "axios";
 
 const PrivateScreen = () => {
   const [error, setError] = useState("");
-  const [privateData, setPrivateData] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
 
-  useEffect(() => {
-    const fetchPrivateDate = async () => {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-      };
+  const addNewUser = async (e) => {
+    e.preventDefault();
 
-      try {
-        const { data } = await axios.get("/api/private", config);
-        setPrivateData(data.data);
-      } catch (error) {
-        localStorage.removeItem("authToken");
-        setError("You are not authorized please login");
-      }
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
     };
+    try {
+      const { data } = await axios.post(
+        "/api/private/user",
+        {
+          username,
+          email,
+        },
+        config
+      );
+      console.log(data);
+    } catch (error) {
+      console.log(error.response.data.message);
+      setError(error.response.data.error);
+      setTimeout(() => {
+        setError("");
+      }, 5000);
+    }
+  };
 
-    fetchPrivateDate();
-  }, []);
   return error ? (
     <span className="error-message">{error}</span>
   ) : (
-    <div>{privateData}</div>
+    <>
+      <div>REGISTER USERS</div>
+      <div className="register-screen">
+        <form onSubmit={addNewUser} className="register-screen__form">
+          <div className="form-group">
+            <label htmlFor="name">Username:</label>
+            <input
+              type="text"
+              required
+              id="name"
+              placeholder="Enter username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              required
+              id="email"
+              placeholder="Email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <button type="submit" className="btn btn-primary">
+            Add New User
+          </button>
+        </form>
+      </div>
+    </>
   );
 };
 
